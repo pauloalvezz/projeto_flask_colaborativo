@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsão de Diabetes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="number"],
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .result.positive {
+            background-color: #ffe0b2; /* Laranja claro */
+            color: #e65100; /* Laranja escuro */
+        }
+        .result.negative {
+            background-color: #e8f5e9; /* Verde claro */
+            color: #2e7d32; /* Verde escuro */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Previsão de Diabetes</h1>
+        <form action="/predict" method="post">
+            <div class="form-group">
+                <label for="age">Idade:</label>
+                <input type="number" id="age" name="age" min="1" max="120" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Sexo:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Selecione</option>
+                    <option value="1">Masculino</option>
+                    <option value="0">Feminino</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="bmi">IMC (Índice de Massa Corporal):</label>
+                <input type="number" id="bmi" name="bmi" step="0.01" min="10" max="60" required>
+            </div>
+            <div class="form-group">
+                <label for="hypertension">Hipertensão:</label>
+                <select id="hypertension" name="hypertension" required>
+                    <option value="">Selecione</option>
+                    <option value="1">Sim</option>
+                    <option value="0">Não</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="heart_disease">Doença Cardíaca:</label>
+                <select id="heart_disease" name="heart_disease" required>
+                    <option value="">Selecione</option>
+                    <option value="1">Sim</option>
+                    <option value="0">Não</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="smoking_history">Histórico de Tabagismo:</label>
+                <select id="smoking_history" name="smoking_history" required>
+                    <option value="">Selecione</option>
+                    <option value="never">Nunca</option>
+                    <option value="no_info">Sem Informação</option>
+                    <option value="current">Atualmente</option>
+                    <option value="ever">Já Fumou</option>
+                    <option value="formerly">Antigamente</option>
+                    <option value="not_current">Não Atualmente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="hba1c_level">Nível de HbA1c:</label>
+                <input type="number" id="hba1c_level" name="hba1c_level" step="0.01" min="3.0" max="15.0" required>
+            </div>
+            <div class="form-group">
+                <label for="blood_glucose_level">Nível de Glicose no Sangue:</label>
+                <input type="number" id="blood_glucose_level" name="blood_glucose_level" step="0.01" min="50" max="300" required>
+            </div>
+            <button type="submit">Prever Diabetes</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result {{ 'positive' if 'positivo' in prediction_text else 'negative' }}">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
