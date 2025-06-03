@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard da Equipe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" />
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <img src="{{ url_for('static',filename='img/logo-senai.png' )}}" alt="Logo sistema" class="logo" />
+        <h1 class="titulo">Dashboard da Equipe</h1>
+    </header>
+
+    <!-- Conteúdo principal com cards -->
+    <main class="container">
+        {% for membro in membros %}
+        <div class="card">
+            <img src="{{ membro.avatar_url }}" alt="Foto de {{ membro.name }}" class="avatar">
+            <h3>{{ membro.name or membro.login }}</h3>
+            <p>{{ membro.bio or "" }}</p>
+            <div class="links">
+                <a href="https://github.com/{{ membro.login }}" target="_blank" title="GitHub">
+                    <img src="{{ url_for('static', filename='img/icons8-github-48.png') }}" class="icon" alt="GitHub">
+                </a>
+                {% if membro.blog and 'linkedin.com' in membro.blog %}
+                <a href="{{ membro.blog }}" target="_blank" title="LinkedIn">
+                    <img src="{{ url_for('static', filename='img/icons8-linkedin-48.png') }}" class="icon" alt="LinkedIn">
+                </a>
+                {% endif %}
+            </div>
+            <a href="/{{ membro.login }}" class="btn">Ver Rota</a>
+        </div>
+        {% endfor %}
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="rodape">
+        <p>Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>
