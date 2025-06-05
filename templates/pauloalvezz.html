@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Predição de Diabetes - Quiz Gamificado</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Avaliação de Risco de Diabetes</h1>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <form id="quizForm">
+      <div class="step active">
+        <label>1️⃣ Número de Gravidezes</label>
+        <input type="number" name="Pregnancies" required />
+      </div>
+      <div class="step">
+        <label>2️⃣ Glicose</label>
+        <input type="number" name="Glucose" required />
+      </div>
+      <div class="step">
+        <label>3️⃣ Pressão Arterial</label>
+        <input type="number" name="BloodPressure" required />
+      </div>
+      <div class="step">
+        <label>4️⃣ Espessura da Pele</label>
+        <input type="number" name="SkinThickness" required />
+      </div>
+      <div class="step">
+        <label>5️⃣ Insulina</label>
+        <input type="number" name="Insulin" required />
+      </div>
+      <div class="step">
+        <label>6️⃣ IMC (BMI)</label>
+        <input type="number" step="0.1" name="BMI" required />
+      </div>
+      <div class="step">
+        <label>7️⃣ Hereditariedade (DPF)</label>
+        <input type="number" step="0.01" name="DiabetesPedigreeFunction" required />
+      </div>
+      <div class="step">
+        <label>8️⃣ Idade</label>
+        <input type="number" name="Age" required />
+      </div>
+
+  <form id="quizForm">
+    <!-- ... seus campos de entrada ... -->
+  
+    <div class="buttons">
+      <button type="button" id="prevBtn">◀ Anterior</button>
+      <button type="button" id="nextBtn">Próximo ▶</button>
+      <button type="submit" id="submitBtn" class="hidden">Enviar ✅</button>
+    </div>
+  </form>
+  
+  <div id="result" class="hidden">
+    <h2>🎉 Formulário Concluído!</h2>
+    <p>Os dados foram enviados com sucesso.</p>
+  </div>
+  
+  <script>
+    const steps = document.querySelectorAll(".step");
+    const progress = document.getElementById("progress");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const result = document.getElementById("result");
+    const form = document.getElementById("quizForm");
+  
+    let currentStep = 0;
+  
+    function updateSteps() {
+      steps.forEach((step, index) => {
+        step.classList.toggle("active", index === currentStep);
+      });
+      progress.style.width = ((currentStep + 1) / steps.length) * 100 + "%";
+  
+      prevBtn.style.display = currentStep === 0 ? "none" : "inline-block";
+      nextBtn.style.display = currentStep === steps.length - 1 ? "none" : "inline-block";
+      submitBtn.classList.toggle("hidden", currentStep !== steps.length - 1);
+    }
+  
+    nextBtn.addEventListener("click", () => {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        updateSteps();
+      }
+    });
+  
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep--;
+        updateSteps();
+      }
+    });
+  
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+  
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log("Dados enviados:", data);
+  
+      form.classList.add("hidden");
+      result.classList.remove("hidden");
+  
+      // Você pode usar isso para enviar para backend:
+      // fetch('/seu-endpoint', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(data)
+      // }).then(res => res.json()).then(result => {
+      //   // lidar com a resposta
+      // });
+    });
+  
+    updateSteps();
+  </script>
+  
